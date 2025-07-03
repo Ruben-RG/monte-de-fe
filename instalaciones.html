@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Instalaciones – Institución Monte de Fe A.C.</title>
+<link rel="stylesheet" href="css/estilo.css" />
+<link rel="icon" type="image/png" href="img/img0.png">
+<style>
+/* Lightbox overlay */
+.lightbox {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.9);
+  justify-content: center;
+  align-items: center;
+  padding: 2em;
+  box-sizing: border-box;
+}
+
+.lightbox.active {
+  display: flex;
+}
+
+.lightbox img {
+  max-width: 100%;
+  max-height: 90vh;
+  border-radius: 10px;
+  object-fit: contain;
+  box-shadow: 0 0 15px rgba(0,0,0,0.6);
+  user-select: none;
+  pointer-events: none;
+}
+
+.lightbox .close-btn {
+  position: absolute;
+  top: 20px; right: 30px;
+  font-size: 30px;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  font-weight: bold;
+  z-index: 1100;
+  background: rgba(0,0,0,0.4);
+  padding: 0 10px;
+  border-radius: 5px;
+}
+
+.galeria {
+  display: flex;
+  overflow-x: auto;
+  gap: 1em;
+  padding: 1em 0;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+}
+
+.galeria img {
+  height: 300px;
+  object-fit: cover;
+  scroll-snap-align: center;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.galeria img:hover {
+  transform: scale(1.05);
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-nav">
+    <img src="img/img1.png" alt="Logo Institución Monte de Fe A.C." class="logo" />
+    <h1>Institución Monte de Fe A.C.</h1>
+  </div>
+<div class="menu-toggle" onclick="document.body.classList.toggle('menu-open')">☰</div>
+  <nav>
+    <ul>
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="tratamiento.html">Tratamiento</a></li>
+      <li><a href="instalaciones.html">Instalaciones</a></li>
+      <li><a href="testimonios.html">Testimonios</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="contenido">
+  <h2>Nuestras Instalaciones</h2>
+  <div class="carrusel">
+    <div class="galeria" id="galeria">
+      <!-- Imágenes -->
+      <img src="img/crs1.jpg" alt="Instalación 1" data-index="0" />
+      <img src="img/crs2.jpg" alt="Instalación 2" data-index="1" />
+      <img src="img/crs3.jpg" alt="Instalación 3" data-index="2" />
+      <img src="img/crs4.jpg" alt="Instalación 4" data-index="3" />
+      <img src="img/crs5.jpg" alt="Instalación 5" data-index="4" />
+      <img src="img/crs6.jpg" alt="Instalación 6" data-index="5" />
+      <img src="img/crs7.jpg" alt="Instalación 7" data-index="6" />
+      <img src="img/crs8.jpg" alt="Instalación 8" data-index="7" />
+      <img src="img/crs9.jpg" alt="Instalación 9" data-index="8" />
+      <img src="img/crs10.jpg" alt="Instalación 10" data-index="9" />
+      <img src="img/crs11.jpg" alt="Instalación 11" data-index="10" />
+      <img src="img/crs12.jpg" alt="Instalación 12" data-index="11" />
+      <img src="img/crs13.jpg" alt="Instalación 13" data-index="12" />
+      <img src="img/crs14.jpg" alt="Instalación 14" data-index="13" />
+      <img src="img/crs15.jpg" alt="Instalación 15" data-index="14" />
+      <img src="img/crs16.jpg" alt="Instalación 16" data-index="15" />
+    </div>
+  </div>
+
+  <h3>Dirección</h3>
+  <p>Calle Alonso Espino 121, Los Fresnos, 37390, León de los Aldama, Guanajuato.</p>
+</section>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <span class="close-btn" id="closeBtn">&times;</span>
+  <img src="" alt="Imagen ampliada" id="lightboxImg" />
+</div>
+
+<script>
+  const galeria = document.getElementById('galeria');
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const closeBtn = document.getElementById('closeBtn');
+
+  let currentIndex = 0;
+  const images = [...galeria.querySelectorAll('img')];
+
+  function showLightbox(index) {
+    currentIndex = index;
+    lightboxImg.src = images[currentIndex].src;
+    lightboxImg.alt = images[currentIndex].alt;
+    lightbox.classList.add('active');
+  }
+
+  function hideLightbox() {
+    lightbox.classList.remove('active');
+  }
+
+  galeria.addEventListener('click', e => {
+    if (e.target.tagName === 'IMG') {
+      const index = parseInt(e.target.dataset.index);
+      showLightbox(index);
+    }
+  });
+
+  closeBtn.addEventListener('click', hideLightbox);
+
+  lightbox.addEventListener('click', e => {
+    if (e.target === lightbox) {
+      hideLightbox();
+    }
+  });
+
+  document.addEventListener('keydown', e => {
+    if (!lightbox.classList.contains('active')) return;
+
+    if (e.key === 'Escape') {
+      hideLightbox();
+    } else if (e.key === 'ArrowRight') {
+      currentIndex = (currentIndex + 1) % images.length;
+      showLightbox(currentIndex);
+    } else if (e.key === 'ArrowLeft') {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      showLightbox(currentIndex);
+    }
+  });
+</script>
+
+<footer>
+  <p>&copy; 2025 Institución Monte de Fe A.C. Todos los derechos reservados.</p>
+</footer>
+</body>
+</html>
